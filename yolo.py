@@ -20,13 +20,16 @@ from keras.utils import multi_gpu_model
 
 class YOLO(object):
     _defaults = {
-        "model_path": 'model_data/yolo.h5',
+        "model_path": 'logs/000/trained_weights_final.h5',
         "anchors_path": 'model_data/yolo_anchors.txt',
         "classes_path": 'model_data/coco_classes.txt',
         "score" : 0.3,
         "iou" : 0.45,
         "model_image_size" : (416, 416),
         "gpu_num" : 1,
+        "testfiles_path" : 'VOCdevkit/VOC2007/ImageSets/Main/test.txt',
+        "motfile_path"  : 'VOCdevkit/VOC2007/est_mot.txt',
+        "timefile_path" : 'VOCdevkit/VOC2007/est_time.txt',
     }
 
     @classmethod
@@ -99,8 +102,9 @@ class YOLO(object):
                 score_threshold=self.score, iou_threshold=self.iou)
         return boxes, scores, classes
 
-    def detect_image(self, image):
-        start = timer()
+    def detect_image(self, image, file_index):
+        motfile_path = os.path.expanduser(self.motfile_path)
+        timefile_path = os.path.expanduser(self.timefile_path)
 
         if self.model_image_size != (None, None):
             assert self.model_image_size[0]%32 == 0, 'Multiples of 32 required'
@@ -116,6 +120,7 @@ class YOLO(object):
         image_data /= 255.
         image_data = np.expand_dims(image_data, 0)  # Add batch dimension.
 
+        start = timer()
         out_boxes, out_scores, out_classes = self.sess.run(
             [self.boxes, self.scores, self.classes],
             feed_dict={
@@ -123,6 +128,12 @@ class YOLO(object):
                 self.input_image_shape: [image.size[1], image.size[0]],
                 K.learning_phase(): 0
             })
+        end = timer()
+        time = end - start
+        print(time)
+        time_text = '{0},{1}\n'.format(file_index, time)
+        with open(timefile_path, 'a') as f:
+            f.write(time_text)
 
         print('Found {} boxes for {}'.format(len(out_boxes), 'img'))
 
@@ -146,6 +157,13 @@ class YOLO(object):
             right = min(image.size[0], np.floor(right + 0.5).astype('int32'))
             print(label, (left, top), (right, bottom))
 
+            # Change format of mot
+            width = right - left
+            height = bottom - top
+            mot_text = '{0},-1,{1},{2},{3},{4}\n'.format(file_index, left, top, width, height)
+            with open(motfile_path, 'a') as f:
+                f.write(mot_text)
+
             if top - label_size[1] >= 0:
                 text_origin = np.array([left, top - label_size[1]])
             else:
@@ -161,15 +179,15 @@ class YOLO(object):
                 fill=self.colors[c])
             draw.text(text_origin, label, fill=(0, 0, 0), font=font)
             del draw
+            image.save('output_img/image_{0}.jpg'.format(file_index), quality=95)
 
-        end = timer()
-        print(end - start)
         return image
 
     def close_session(self):
         self.sess.close()
 
 def detect_video(yolo, video_path, output_path=""):
+    motfile_path = os.path.expanduser(self.motfile_path)
     import cv2
     vid = cv2.VideoCapture(video_path)
     if not vid.isOpened():
@@ -189,7 +207,7 @@ def detect_video(yolo, video_path, output_path=""):
     while True:
         return_value, frame = vid.read()
         image = Image.fromarray(frame)
-        image = yolo.detect_image(image)
+        image = yolo.detect_image(image, motfile_path)
         result = np.asarray(image)
         curr_time = timer()
         exec_time = curr_time - prev_time

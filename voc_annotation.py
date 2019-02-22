@@ -3,7 +3,7 @@ from os import getcwd
 
 sets=[('2007', 'train'), ('2007', 'val'), ('2007', 'test')]
 
-classes = ["aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car", "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person", "pottedplant", "sheep", "sofa", "train", "tvmonitor"]
+classes = ["Character"]
 
 
 def convert_annotation(year, image_id, list_file):
@@ -12,9 +12,9 @@ def convert_annotation(year, image_id, list_file):
     root = tree.getroot()
 
     for obj in root.iter('object'):
-        difficult = obj.find('difficult').text
+        occluded = obj.find('occluded').text
         cls = obj.find('name').text
-        if cls not in classes or int(difficult)==1:
+        if cls not in classes or int(occluded)==1:
             continue
         cls_id = classes.index(cls)
         xmlbox = obj.find('bndbox')

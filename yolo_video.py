@@ -5,15 +5,20 @@ from PIL import Image
 
 def detect_img(yolo):
     while True:
-        img = input('Input image filename:')
-        try:
-            image = Image.open(img)
-        except:
-            print('Open Error! Try again!')
-            continue
-        else:
-            r_image = yolo.detect_image(image)
-            r_image.show()
+        # img = input('Input image filename:')
+        print('Detection Test Start!')
+        image_ids = open('VOCdevkit/VOC2007/ImageSets/Main/test.txt').read().strip().split()
+        for image_id in image_ids:
+            try:
+                img = 'VOCdevkit/VOC2007/JPEGImages/' + image_id + '.jpg'
+                image = Image.open(img)
+            except:
+                print('Open Error! Try again!')
+                continue
+            else:
+                r_image = yolo.detect_image(image, image_id)
+                r_image.show()
+        break
     yolo.close_session()
 
 FLAGS = None
