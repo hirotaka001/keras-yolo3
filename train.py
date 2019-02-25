@@ -131,7 +131,7 @@ def create_model(input_shape, anchors, num_classes, load_pretrained=True, freeze
         [*model_body.output, *y_true])
     model = Model([model_body.input, *y_true], model_loss)
     # Multi-GPU Model
-    model = multi_gpu_model(model, gpu_num)
+    model = multi_gpu_model(model, gpus=gpu_num)
 
     return model
 
@@ -163,7 +163,7 @@ def create_tiny_model(input_shape, anchors, num_classes, load_pretrained=True, f
         [*model_body.output, *y_true])
     model = Model([model_body.input, *y_true], model_loss)
     # Multi-GPU Model
-    model = multi_gpu_model(model, gpu_num)
+    model = multi_gpu_model(model, gpus=gpu_num)
 
     return model
 
