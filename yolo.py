@@ -18,7 +18,7 @@ from yolo3.utils import letterbox_image
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 from keras.utils import multi_gpu_model
-gpu_num=1
+gpu_num=2
 
 class YOLO(object):
     _defaults = {
@@ -28,7 +28,7 @@ class YOLO(object):
         "score" : 0.3,
         "iou" : 0.45,
         "model_image_size" : (416, 416),
-        "gpu_num" : 1,
+        "gpu_num" : 2,
         "testfiles_path" : '../aushop_fullbody_tx5vx01_20190110/Converted_Root/ImageSets/Main/val.txt',
         "motfile_path"  : '../aushop_fullbody_tx5vx01_20190110/Converted_Root/est_mot.txt',
         "timefile_path" : '../aushop_fullbody_tx5vx01_20190110/Converted_Root/est_time.txt',
