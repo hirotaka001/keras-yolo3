@@ -29,9 +29,9 @@ class YOLO(object):
         "iou" : 0.45,
         "model_image_size" : (416, 416),
         "gpu_num" : 1,
-        "testfiles_path" : 'VOCdevkit/VOC2007/ImageSets/Main/test.txt',
-        "motfile_path"  : 'VOCdevkit/VOC2007/est_mot.txt',
-        "timefile_path" : 'VOCdevkit/VOC2007/est_time.txt',
+        "testfiles_path" : '../aushop_fullbody_tx5vx01_20190110/Converted_Root/ImageSets/Main/test.txt',
+        "motfile_path"  : '../aushop_fullbody_tx5vx01_20190110/Converted_Root/est_mot.txt',
+        "timefile_path" : '../aushop_fullbody_tx5vx01_20190110/Converted_Root/est_time.txt',
     }
 
     @classmethod
