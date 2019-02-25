@@ -7,10 +7,10 @@ def detect_img(yolo):
     while True:
         # img = input('Input image filename:')
         print('Detection Test Start!')
-        image_ids = open('VOCdevkit/VOC2007/ImageSets/Main/test.txt').read().strip().split()
+        image_ids = open('../aushop_fullbody_tx5vx01_20190110/Converted_Root/ImageSets/Main/test.txt').read().strip().split()
         for image_id in image_ids:
             try:
-                img = 'VOCdevkit/VOC2007/JPEGImages/' + image_id + '.jpg'
+                img = '../aushop_fullbody_tx5vx01_20190110/Converted_Root/JPEGImages/' + image_id + '.jpg'
                 image = Image.open(img)
             except:
                 print('Open Error! Try again!')
