@@ -12,7 +12,6 @@ from keras.utils import multi_gpu_model
 
 from yolo3.model import preprocess_true_boxes, yolo_body, tiny_yolo_body, yolo_loss
 from yolo3.utils import get_random_data
-gpu_num=2
 
 def _main():
     annotation_path = '2007_train.txt'
@@ -130,8 +129,6 @@ def create_model(input_shape, anchors, num_classes, load_pretrained=True, freeze
         arguments={'anchors': anchors, 'num_classes': num_classes, 'ignore_thresh': 0.5})(
         [*model_body.output, *y_true])
     model = Model([model_body.input, *y_true], model_loss)
-    # Multi-GPU Model
-    model = multi_gpu_model(model, gpus=gpu_num)
 
     return model
 
@@ -162,8 +159,6 @@ def create_tiny_model(input_shape, anchors, num_classes, load_pretrained=True, f
         arguments={'anchors': anchors, 'num_classes': num_classes, 'ignore_thresh': 0.7})(
         [*model_body.output, *y_true])
     model = Model([model_body.input, *y_true], model_loss)
-    # Multi-GPU Model
-    model = multi_gpu_model(model, gpus=gpu_num)
 
     return model
 

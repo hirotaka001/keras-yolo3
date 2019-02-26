@@ -19,9 +19,9 @@ from yolo3.model import preprocess_true_boxes, yolo_body, tiny_yolo_body, yolo_l
 from yolo3.utils import get_random_data
 
 def _main():
-    annotation_path = '/home/jiangmingchao/raccoon_dataset/voc_train.txt'
-    log_dir = 'logs/raccoon/'
-    classes_path = '/home/jiangmingchao/raccoon_dataset/train_classes.txt'
+    annotation_path = '2007_train.txt'
+    log_dir = 'logs/000/'
+    classes_path = 'model_data/voc_classes.txt'
     anchors_path = 'model_data/yolo_anchors.txt'
     class_names = get_classes(classes_path)
     num_classes = len(class_names)
@@ -75,7 +75,7 @@ def _main():
     '''
     write test code for multi_gpus
     '''
-    model = multi_gpu_model(template_model, gpus=2)
+    model = multi_gpu_model(template_model, gpus=1)
     print('use the multi_gpu_model for model training ')
 
     '''do not know that is useful for unfreeze or freeze'''
@@ -94,14 +94,13 @@ def _main():
             'yolo_loss': lambda y_true, y_pred: y_pred})
         print("the gpu-model compile is ok!!")
 
-        batch_size = 64
-    
+        batch_size = 8
         print('Train on {} samples, val on {} samples, with batch size {}.'.format(num_train, num_val, batch_size))
         history_logs = model.fit_generator(data_generator_wrapper(lines[:num_train], batch_size, input_shape, anchors, num_classes),
                 steps_per_epoch=max(1, num_train//batch_size),
                 validation_data=data_generator_wrapper(lines[num_train:], batch_size, input_shape, anchors, num_classes),
                 validation_steps=max(1, num_val//batch_size),
-                epochs=200,
+                epochs=50,
                 initial_epoch=0,
                 callbacks=[logging, lr_shedule, checkpoint])
         # wirte loss record to a json file
@@ -115,7 +114,7 @@ def _main():
 '''functions'''
 
 def get_loss_fig():
-    epochs = 40
+    epochs = 50
     data = []
     with codecs.open("logs/jiaotong_1/history_logs.json", "r", "utf-8") as f:
         for line in f:
@@ -149,7 +148,7 @@ def get_anchors(anchors_path):
 
 
 def create_model(input_shape, anchors, num_classes, load_pretrained=True, freeze_body=2,
-            weights_path='/model_data/yolo_weights.h5'):
+            weights_path='model_data/yolo_weights.h5'):
     '''create the training model'''
     K.clear_session() # get a new session
     image_input = Input(shape=(None, None, 3))
