@@ -8,6 +8,7 @@ def detect_img(yolo):
         # img = input('Input image filename:')
         print('Detection Test Start!')
         image_ids = open('VOCdevkit/VOC2007/ImageSets/Main/test.txt').read().strip().split()
+        image_index = 1
         for image_id in image_ids:
             try:
                 img = 'VOCdevkit/VOC2007/JPEGImages/' + image_id + '.jpg'
@@ -16,8 +17,9 @@ def detect_img(yolo):
                 print('Open Error! Try again!')
                 continue
             else:
-                r_image = yolo.detect_image(image, image_id)
+                r_image = yolo.detect_image(image, image_index)
                 r_image.show()
+                image_index += 1
         break
     yolo.close_session()
 
