@@ -419,7 +419,8 @@ def yolo_loss(args, anchors, num_classes, ignore_thresh=.5, print_loss=True):
         if print_loss:
             loss = tf.Print(loss, [loss, xy_loss, wh_loss, confidence_loss, class_loss, K.sum(ignore_mask)], message='loss: ')
             # サマリーOPのセッション上での実行
-            __, summary = sess.run([train, merged], feed_dict={x: x_input[l], y: y_input[l]})
+#            __, summary = sess.run([train, merged], feed_dict={x: x_input[l], y: y_input[l]})
+            __, summary = sess.run([merged], feed_dict={x: x_input[l], y: y_input[l]})
             # 実行結果のファイルへの書き出し
             writer.add_summary(summary, _)
     return loss
