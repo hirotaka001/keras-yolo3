@@ -368,6 +368,20 @@ def yolo_loss(args, anchors, num_classes, ignore_thresh=.5, print_loss=True):
     m = K.shape(yolo_outputs[0])[0] # batch size, tensor
     mf = K.cast(m, K.dtype(yolo_outputs[0]))
 
+    # セッションを生成
+    sess = tf.InteractiveSession()
+
+    # 学習用入力データのプレースホルダの定義
+    x = tf.placeholder(tf.float32, shape=[3, 1], name="x")
+    # 学習用出力データのプレースホルダの定義
+    y = tf.placeholder(tf.float32, shape=[3, 1], name="y")
+
+    # TensorBoardで追跡する変数を定義
+    with tf.name_scope('summary'):
+        writer = tf.summary.FileWriter('/logs/000', sess.graph)
+        tf.summary.scalar('loss', loss)
+        merged = tf.summary.merge_all()
+
     for l in range(num_layers):
         object_mask = y_true[l][..., 4:5]
         true_class_probs = y_true[l][..., 5:]
@@ -409,4 +423,9 @@ def yolo_loss(args, anchors, num_classes, ignore_thresh=.5, print_loss=True):
         loss += xy_loss + wh_loss + confidence_loss + class_loss
         if print_loss:
             loss = tf.Print(loss, [loss, xy_loss, wh_loss, confidence_loss, class_loss, K.sum(ignore_mask)], message='loss: ')
+            # サマリーOPのセッション上での実行
+#            __, summary = sess.run([train, merged], feed_dict={x: x_input[l], y: y_input[l]})
+            __, summary = sess.run([merged], feed_dict={x: xy_loss, y: wh_loss})
+            # 実行結果のファイルへの書き出し
+            writer.add_summary(summary, _)
     return loss
