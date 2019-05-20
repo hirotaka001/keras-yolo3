@@ -27,9 +27,9 @@ class YOLO(object):
         "iou" : 0.45,
         "model_image_size" : (416, 416),
         "gpu_num" : 1,
-        "testfiles_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Misatochuo/ImageSets/Main/val.txt',
-        "motfile_path"  : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Misatochuo/est_mot.txt',
-        "timefile_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Misatochuo/est_time.txt',
+        "testfiles_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Kiyose/ImageSets/Main/val.txt',
+        "motfile_path"  : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Kiyose/est_mot.txt',
+        "timefile_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Kiyose/est_time.txt',
     }
 
     @classmethod
