@@ -7,11 +7,11 @@ def detect_img(yolo):
     while True:
         # img = input('Input image filename:')
         print('Detection Test Start!')
-        image_ids = open('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/ImageSets/Main/val.txt').read().strip().split()
+        image_ids = open('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/ImageSets/Main/val.txt').read().strip().split()
         image_index = 1
         for image_id in image_ids:
             try:
-                img = '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/JPEGImages/' + image_id + '.jpg'
+                img = '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/JPEGImages/' + image_id + '.jpg'
                 image = Image.open(img)
             except:
                 print('Open Error! Try again!')

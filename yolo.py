@@ -27,9 +27,9 @@ class YOLO(object):
         "iou" : 0.45,
         "model_image_size" : (416, 416),
         "gpu_num" : 1,
-        "testfiles_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/ImageSets/Main/val.txt',
-        "motfile_path"  : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/est_mot.txt',
-        "timefile_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/est_time.txt',
+        "testfiles_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/ImageSets/Main/val.txt',
+        "motfile_path"  : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/est_mot.txt',
+        "timefile_path" : '/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/est_time.txt',
     }
 
     @classmethod

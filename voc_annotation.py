@@ -7,7 +7,7 @@ classes = ["person"]
 
 
 def convert_annotation(year, image_id, list_file):
-    in_file = open('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/Annotations/%s.xml'%(image_id))
+    in_file = open('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/Annotations/%s.xml'%(image_id))
     tree=ET.parse(in_file)
     root = tree.getroot()
 
@@ -24,10 +24,10 @@ def convert_annotation(year, image_id, list_file):
 wd = getcwd()
 
 for year, image_set in sets:
-    image_ids = open('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/ImageSets/Main/%s.txt'%(image_set)).read().strip().split()
+    image_ids = open('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/ImageSets/Main/%s.txt'%(image_set)).read().strip().split()
     list_file = open('%s_%s.txt'%(year, image_set), 'w')
     for image_id in image_ids:
-        list_file.write('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Asaka/JPEGImages/%s.jpg'%( image_id))
+        list_file.write('/mnt/datasets/aushop_fullbody_tvx1_20190227/Trial_Nakameguro/JPEGImages/%s.jpg'%( image_id))
         convert_annotation(year, image_id, list_file)
         list_file.write('\n')
     list_file.close()
